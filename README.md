@@ -12,6 +12,7 @@ Two plugins enforce an image-only extension allowlist (`jpg`, `jpeg`, `gif`, `pn
 ## Installation
 
 ```bash
+composer require markshust/magento2-module-polyshell-patch
 bin/magento module:enable MarkShust_PolyshellPatch
 bin/magento setup:upgrade
 bin/magento cache:flush
