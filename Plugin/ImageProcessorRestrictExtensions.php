@@ -21,7 +21,7 @@ class ImageProcessorRestrictExtensions
     /**
      * @var Uploader
      */
-    private Uploader $uploader;
+    private $uploader;
 
     /**
      * @param Uploader $uploader

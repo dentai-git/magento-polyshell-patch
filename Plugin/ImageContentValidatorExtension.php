@@ -24,7 +24,7 @@ class ImageContentValidatorExtension
     /**
      * @var IoFile
      */
-    private IoFile $ioFile;
+    private $ioFile;
 
     /**
      * @param IoFile $ioFile
