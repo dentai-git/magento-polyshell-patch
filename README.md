@@ -2,40 +2,13 @@
 
 Mitigates the PolyShell vulnerability — an unrestricted file upload in the Magento REST API that allows attackers to upload executable files via cart item custom option file uploads.
 
----
-
-## !! DEPRECATED — DO NOT USE !!
-
-**This package has been deprecated and abandoned in favor of [`aregowe/magento2-module-polyshell-protection`](https://github.com/aregowe/magento2-module-polyshell-protection).**
-
-That module integrates all of this module's protection and extends it significantly with:
-
-- Polyglot file scanning (detects valid images with embedded PHP)
-- No-extension and double-extension attack detection
-- Multi-pass URL decoding and obfuscation normalization
-- Known attack filename/pattern matching
-- Request path blocking at the FrontController and `pub/get.php` level
-- Controller-level upload blocking for customer attribute and file upload endpoints
-- A kill switch blocking all custom option file uploads via the Webapi File Processor
-
-### Migration
-
-If you currently have this module installed, migrate with:
-
-```bash
-bin/magento module:disable MarkShust_PolyshellPatch
-bin/magento setup:upgrade
-composer require aregowe/magento2-module-polyshell-protection
-bin/magento module:enable Aregowe_PolyShellProtection
-bin/magento setup:upgrade
-bin/magento cache:flush
-```
-
-The replacement package includes a Composer `replace` directive for `markshust/magento2-module-polyshell-patch`, so Composer will handle the transition automatically.
+This module was originally forked from [markshust/magento2-module-polyshell-patch](https://github.com/markshust/magento-polyshell-patch) by [Mark Shust](https://github.com/markshust).
 
 ---
 
-> **The following documentation is preserved for reference only.** This module is no longer maintained. If you choose to use it anyway, it will still block the basic exploit, but the replacement module above provides far more comprehensive protection.
+> **Compatibility note:** This fork has been updated to support **PHP 7.3** and **Magento 2.3.x** (`magento/framework` 102.x). The original module required PHP 8.1+ and Magento 2.4.x only.
+
+---
 
 ## What this module does
 
@@ -104,7 +77,35 @@ If any files are found (especially `.php`, `.phtml`, or `.phar`), investigate im
 
 ## When to remove this module
 
-This module is an interim hotfix. Remove it once Adobe backports the official patch to production Magento versions (2.4.8-p4 or later). To remove:
+### Magento 2.3.x
+
+Adobe **will not patch Magento 2.3.x** — it has been end-of-life since September 2023 and APSB25-94 only covers 2.4.4 and above. This module provides a fix for 2.3.x stores until a better option is available.
+
+The recommended long-term approach is to upgrade to a supported Magento version (2.4.6 or later with the corresponding security patch applied). Until then, keep this module enabled.
+
+A more comprehensive 2.3.x-compatible module may be available - check for forks of [aregowe/magento2-module-polyshell-protection](https://github.com/aregowe/magento2-module-polyshell-protection) that target Magento 2.3.x, as that module extends it significantly with:
+
+- Polyglot file scanning (detects valid images with embedded PHP)
+- No-extension and double-extension attack detection
+- Multi-pass URL decoding and obfuscation normalization
+- Known attack filename/pattern matching
+- Request path blocking at the FrontController and `pub/get.php` level
+- Controller-level upload blocking for customer attribute and file upload endpoints
+- A kill switch blocking all custom option file uploads via the Webapi File Processor
+
+### Magento 2.4.x
+
+Adobe has released official patches for all supported 2.4.x branches:
+
+| Your version | Upgrade to | Patch released |
+|---|---|---|
+| 2.4.4-p15 and earlier | 2.4.4-p16 
+| 2.4.5-p14 and earlier | 2.4.5-p15
+| 2.4.6-p12 and earlier | 2.4.6-p13
+| 2.4.7-p7 and earlier | 2.4.7-p8
+| 2.4.8-p2 and earlier | 2.4.8-p3
+
+Once you have applied the official Adobe patch for your 2.4.x version, you can remove this module:
 
 If you have installed it manually:
 
@@ -138,8 +139,9 @@ We intentionally did not replicate that approach because:
 
 - [Sansec: Magento PolyShell](https://sansec.io/research/magento-polyshell)
 - [Adobe official fix (commit)](https://github.com/magento/magento2/commit/796c4ce195cee0814ac92e5a19fc2ecfa79dae69)
-- Adobe Security Bulletin: APSB25-94
-- Patched in Magento 2.4.9-alpha3+ (pre-release only, no production patch available)
+- [Adobe Security Bulletin APSB25-94](https://helpx.adobe.com/security/products/magento/apsb25-94.html)
+- Patched in Magento 2.4.4-p16, 2.4.5-p15, 2.4.6-p13, 2.4.7-p8, 2.4.8-p3 (October 2025)
+- **Magento 2.3.x: no official patch — EOL version, this module is the permanent fix**
 
 ## Credits
 
